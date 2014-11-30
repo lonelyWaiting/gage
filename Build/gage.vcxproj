@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F9F8F120-0992-4AAC-8817-3EF5988EFD64}</ProjectGuid>
+    <RootNamespace>gage</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(DXSDK_DIR)\include\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(DXSDK_DIR)\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(DXSDK_DIR)\include\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(DXSDK_DIR)\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..;..\System;..\Game;..\Render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d11.lib;d3dx11.lib;d3dcompiler.lib;dxguid.lib;d3dx9.lib;d3dx10.lib;dxerr.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..;..\System;..\Game;..\Render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d11.lib;d3dx11.lib;d3dcompiler.lib;dxguid.lib;d3dx9.lib;d3dx10.lib;dxerr.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\External\lua-5.2.2\src\lapi.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lauxlib.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lcode.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lctype.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\ldebug.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\ldo.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lfunc.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lgc.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\llex.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\llimits.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lmem.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lobject.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lopcodes.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lparser.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lstate.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lstring.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\ltable.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\ltm.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lua.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lua.hpp" />
+    <ClInclude Include="..\External\lua-5.2.2\src\luaconf.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lualib.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lundump.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lvm.h" />
+    <ClInclude Include="..\External\lua-5.2.2\src\lzio.h" />
+    <ClInclude Include="..\Game\Camera.h" />
+    <ClInclude Include="..\Game\Entity.h" />
+    <ClInclude Include="..\Game\Game.h" />
+    <ClInclude Include="..\Game\Particles.h" />
+    <ClInclude Include="..\Render\Font.h" />
+    <ClInclude Include="..\Render\GpuProfiler.h" />
+    <ClInclude Include="..\Render\Mesh.h" />
+    <ClInclude Include="..\Render\OBJLoader.h" />
+    <ClInclude Include="..\Render\Shader.h" />
+    <ClInclude Include="..\Render\ShaderList.h" />
+    <ClInclude Include="..\Render\ShaderParameters.h" />
+    <ClInclude Include="..\Render\Text.h" />
+    <ClInclude Include="..\Render\Texture.h" />
+    <ClInclude Include="..\Shaders\Common.h" />
+    <ClInclude Include="..\Shaders\Shared.h" />
+    <ClInclude Include="..\System\Array.h" />
+    <ClInclude Include="..\System\Clock.h" />
+    <ClInclude Include="..\System\Core.h" />
+    <ClInclude Include="..\System\Input.h" />
+    <ClInclude Include="..\System\Script.h" />
+    <ClInclude Include="..\System\System.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\External\lua-5.2.2\src\lapi.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lauxlib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lbaselib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lbitlib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lcode.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lcorolib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lctype.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ldblib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ldebug.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ldo.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ldump.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lfunc.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lgc.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\linit.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\liolib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\llex.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lmathlib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lmem.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\loadlib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lobject.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lopcodes.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\loslib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lparser.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lstate.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lstring.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lstrlib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ltable.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ltablib.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\ltm.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\luac.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lundump.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lvm.c" />
+    <ClCompile Include="..\External\lua-5.2.2\src\lzio.c" />
+    <ClCompile Include="..\Game\Camera.cpp" />
+    <ClCompile Include="..\Game\Entity.cpp" />
+    <ClCompile Include="..\Game\Game.cpp" />
+    <ClCompile Include="..\Game\Particles.cpp" />
+    <ClCompile Include="..\Render\Font.cpp" />
+    <ClCompile Include="..\Render\GpuProfiler.cpp" />
+    <ClCompile Include="..\Render\Mesh.cpp" />
+    <ClCompile Include="..\Render\OBJLoader.cpp" />
+    <ClCompile Include="..\Render\Shader.cpp" />
+    <ClCompile Include="..\Render\Text.cpp" />
+    <ClCompile Include="..\Render\Texture.cpp" />
+    <ClCompile Include="..\System\Clock.cpp" />
+    <ClCompile Include="..\System\Input.cpp" />
+    <ClCompile Include="..\System\Script.cpp" />
+    <ClCompile Include="..\System\System.cpp" />
+    <ClCompile Include="..\System\WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Shaders\ComputeShaders.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\ShaderCompiler\sc.py %(Identity) ..\Shaders\%(Filename).fxo
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Shaders\%(Filename).fxo</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Shaders\Mesh.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\ShaderCompiler\sc.py %(Identity) ..\Shaders\%(Filename).fxo</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Shaders\%(Filename).fxo</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\ShaderCompiler\sc.py %(Identity) ..\Shaders\%(Filename).fxo</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Shaders\%(Filename).fxo</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\Shaders\Text.fx">
+      <FileType>Document</FileType>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Shaders\%(Filename).fxo</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Shaders\%(Filename).fxo</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\ShaderCompiler\sc.py %(Identity) ..\Shaders\%(Filename).fxo</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\ShaderCompiler\sc.py %(Identity) ..\Shaders\%(Filename).fxo</Command>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

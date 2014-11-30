@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{48bde756-5c31-4489-8a80-4c467ac7d861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{321aa89f-9d7f-4830-b982-d1c946803fcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{24d99e82-e523-4d12-9d68-cadcb11e0497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{258075fd-60c2-417b-bab6-177dea42d301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{00d44dd6-f0d3-4171-b57c-c8a655b8d41f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Shaders\Common.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shaders\Shared.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lapi.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lauxlib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lcode.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lctype.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\ldebug.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\ldo.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lfunc.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lgc.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\llex.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\llimits.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lmem.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lobject.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lopcodes.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lparser.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lstate.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lstring.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\ltable.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\ltm.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lua.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lua.hpp">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\luaconf.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lualib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lundump.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lvm.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\External\lua-5.2.2\src\lzio.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Font.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\GpuProfiler.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Mesh.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\OBJLoader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\ShaderList.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\ShaderParameters.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Text.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Render\Texture.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Array.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Clock.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Core.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Input.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Script.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Camera.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Entity.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Particles.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\External\lua-5.2.2\src\lapi.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lauxlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lbaselib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lbitlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lcode.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lcorolib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lctype.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ldblib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ldebug.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ldo.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ldump.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lfunc.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lgc.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\linit.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\liolib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\llex.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lmathlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lmem.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\loadlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lobject.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lopcodes.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\loslib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lparser.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lstate.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lstring.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lstrlib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ltable.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ltablib.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\ltm.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\luac.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lundump.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lvm.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\External\lua-5.2.2\src\lzio.c">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Font.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\GpuProfiler.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Mesh.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\OBJLoader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Shader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Text.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Render\Texture.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Clock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Input.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Script.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\System.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\WinMain.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Camera.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Entity.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Game\Particles.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Shaders\ComputeShaders.fx">
+      <Filter>Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Shaders\Text.fx">
+      <Filter>Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Shaders\Mesh.fx">
+      <Filter>Shaders</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
