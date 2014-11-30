@@ -31,15 +31,56 @@ IDXGISwapChain* System::swap_chain;
 ID3D11RenderTargetView* System::render_target_view;
 ID3D11DepthStencilView* System::depth_stencil_view;
 ID3D11UnorderedAccessView* System::render_target_uav;
-uint System::framecount;
+uint System::frame_count;
 
 HINSTANCE g_Instance;
 
 static ID3D11Texture2D *g_BackBuf;
 static ID3D11Texture2D *g_DepthBuf;
 
+const char* System::project_root = NULL;
+
+static void SetProjectRoot()
+{
+	char current_directory[4096];
+	::GetCurrentDirectory(4096, current_directory);
+
+    Array<int> splits;
+	const char* point = current_directory;
+	while (*point)
+	{
+		while (*point && *point != '\\') point++;
+		while (*point && *point == '\\') point++;
+		splits.Add((int)(point - current_directory));
+	}
+
+	for (int i=(int)splits.size-1; i>=0; i--)
+    {
+        char path[4096];
+        strncpy(path, current_directory, splits[i]);
+		path[splits[i]] = '\0';
+        strcat(path, "\\.git");
+        DWORD attr = ::GetFileAttributes(path);
+        if (attr != INVALID_FILE_ATTRIBUTES)
+		{
+			char* root = new char[splits[i]+1];
+			strncpy(root, current_directory, splits[i]);
+			root[splits[i]] = '\0';
+			strcat(root, "\\");
+			::SetCurrentDirectory(root);
+			System::project_root = root;
+            return;
+		}
+    }
+
+	MessageBox(NULL, "Could not locate project root\n(couldn't find the .git directory by looking backwards from the .exe)", "Error", MB_OK);
+	exit(-1);
+}
+
 void System::Startup(HWND hwnd)
 {
+	SetProjectRoot();
+
     Input::Startup();
     
     //assert(XMVerifyCPUSupport());
@@ -172,7 +213,7 @@ void System::GameLoop()
     if (Input::key_down[' '])
         Shader::Reload();
 		
-    GpuProfiler::BeginFrame(d3d_context, framecount);
+    GpuProfiler::BeginFrame(d3d_context, frame_count);
 
     d3d_context->ClearState();
 
@@ -198,11 +239,11 @@ void System::GameLoop()
 
     cpu_frame_time = Clock::GetTimeDeltaSec(cpu_begin);
 
-	GpuProfiler::EndFrame(d3d_context, framecount);
+	GpuProfiler::EndFrame(d3d_context, frame_count);
 
     HRESULT hr;
     hr = swap_chain->Present(0, 0);
     assert(SUCCEEDED(hr));
 
-    framecount++;
+    frame_count++;
 }

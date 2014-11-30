@@ -16,5 +16,7 @@ public:
 	static ID3D11UnorderedAccessView* render_target_uav;
     static ID3D11DepthStencilView*	  depth_stencil_view;
 
-    static uint framecount;
+    static uint frame_count;
+
+	static const char* project_root;
 };
