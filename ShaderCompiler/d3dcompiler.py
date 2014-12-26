@@ -1,11 +1,13 @@
 import struct
 from ctypes import *
+from ctypes.wintypes import *
+from comtypes import * 
 
-class GUID(Structure):
-  _fields_ = [("i0", c_uint),("i1", c_uint),("i2", c_uint),("i3", c_uint)]
-
-IID_ID3D11ShaderReflection = GUID(0x0a233719, 0x45783960, 0x3b207c9d, 0xc19c1d8b)
-
+class ID3D11ShaderReflectionType(IUnknown):  _iid_ = GUID("{6E6FFA6A-9BAE-4613-A51E-91652D508C21}")
+class ID3D11ShaderReflectionVariable(IUnknown): _iid_ = GUID("{51F23923-F3E5-4BD1-91CB-606177D8DB4C}")
+class ID3D11ShaderReflectionConstantBuffer(IUnknown): _iid_ = GUID("{EB62D63D-93DD-4318-8AE8-C6F83AD371B8}")
+class ID3D11ShaderReflection(IUnknown): _iid_ = GUID("{0a233719-3960-4578-9d7c-203b8b1d9cc1}")
+    
 class D3D11_SHADER_DESC(Structure):
   _fields_ = [
     ("Version", c_uint),
@@ -96,50 +98,148 @@ class D3D11_SIGNATURE_PARAMETER_DESC(Structure):
     ("ReadWriteMask", c_ubyte),
     ("Stream", c_uint) ]
 
-class ID3D11ShaderReflectionConstantBuffer(Structure):
-  _fields_ = [ ("vtable", POINTER(WINFUNCTYPE(None))) ]
-  IGetDesc = 0
-  IGetVariableByIndex = 1
-  IGetVariableByName = 2
-  def GetDesc(self, a):
-    GetDescFuncPtrType = WINFUNCTYPE(HRESULT, POINTER(ID3D11ShaderReflectionConstantBuffer), POINTER(D3D11_SHADER_BUFFER_DESC))
-    fnptr = cast(self.vtable[ID3D11ShaderReflectionConstantBuffer.IGetDesc], GetDescFuncPtrType)
-    return fnptr(self, a)
+class D3D11_SHADER_VARIABLE_DESC(Structure):
+  _fields_ = [
+    ("Name", c_char_p),
+    ("StartOffset", c_uint),
+    ("Size", c_uint),
+    ("uFlags", c_uint),
+    ("DefaultValue", POINTER(None)),
+    ("StartTexture", c_uint),
+    ("TextureSize", c_uint),
+    ("StartSampler", c_uint),
+    ("SamplerSize", c_uint) ]
 
-class ID3D11ShaderReflection(Structure):
-  _fields_ = [ ("vtable", POINTER(WINFUNCTYPE(None))) ]
-  IAddRef = 0
-  IQueryInterface = 1
-  IRelease = 2
-  IGetDesc = 3
-  IGetConstantBufferByIndex = 4
-  IGetConstantBufferByName = 5
-  IGetResourceBindingDesc = 6
-  IGetInputParameterDesc = 7
-  IGetOutputParameterDesc = 8
-  IGetPatchConstantParameterDesc = 9
-  IGetVariableByName = 10
-  IGetResourceBindingDescByName = 11
-  def GetDesc(self, a):
-    GetDescFuncPtrType = WINFUNCTYPE(HRESULT, POINTER(ID3D11ShaderReflection), POINTER(D3D11_SHADER_DESC))
-    fnptr = cast(self.vtable[ID3D11ShaderReflection.IGetDesc], GetDescFuncPtrType)
-    return fnptr(self, a)
-  def GetConstantBufferByIndex(self, a):
-    GetConstantBufferByIndexFuncPtrType = WINFUNCTYPE(POINTER(ID3D11ShaderReflectionConstantBuffer), POINTER(ID3D11ShaderReflection), c_uint)
-    fnptr = cast(self.vtable[ID3D11ShaderReflection.IGetConstantBufferByIndex], GetConstantBufferByIndexFuncPtrType)
-    return fnptr(self, a)
-  def GetResourceBindingDesc(self, a, b):
-    GetResourceBindingDescFuncPtrType = WINFUNCTYPE(HRESULT, POINTER(ID3D11ShaderReflection), c_uint, POINTER(D3D11_SHADER_INPUT_BIND_DESC))
-    fnptr = cast(self.vtable[ID3D11ShaderReflection.IGetResourceBindingDesc], GetResourceBindingDescFuncPtrType)
-    return fnptr(self, a, b)
-  def GetInputParameterDesc(self, a, b):
-    GetInputParameterDescFuncPtrType = WINFUNCTYPE(HRESULT, POINTER(ID3D11ShaderReflection), c_uint, POINTER(D3D11_SIGNATURE_PARAMETER_DESC))
-    fnptr = cast(self.vtable[ID3D11ShaderReflection.IGetInputParameterDesc], GetInputParameterDescFuncPtrType)
-    return fnptr(self, a, b)
-  def GetOutputParameterDesc(self, a, b):
-    GetOutputParameterDescFuncPtrType = WINFUNCTYPE(HRESULT, POINTER(ID3D11ShaderReflection), c_uint, POINTER(D3D11_SIGNATURE_PARAMETER_DESC))
-    fnptr = cast(self.vtable[ID3D11ShaderReflection.IGetOutputParameterDesc], GetOutputParameterDescFuncPtrType)
-    return fnptr(self, a, b)
+class D3D_PRIMITIVE:
+    D3D_PRIMITIVE_UNDEFINED                = 0,
+    D3D_PRIMITIVE_POINT                    = 1,
+    D3D_PRIMITIVE_LINE                     = 2,
+    D3D_PRIMITIVE_TRIANGLE                 = 3,
+    D3D_PRIMITIVE_LINE_ADJ                 = 6,
+    D3D_PRIMITIVE_TRIANGLE_ADJ             = 7,
+    D3D_PRIMITIVE_1_CONTROL_POINT_PATCH    = 8,
+    D3D_PRIMITIVE_2_CONTROL_POINT_PATCH    = 9,
+    D3D_PRIMITIVE_3_CONTROL_POINT_PATCH    = 10,
+    D3D_PRIMITIVE_4_CONTROL_POINT_PATCH    = 11,
+    D3D_PRIMITIVE_5_CONTROL_POINT_PATCH    = 12,
+    D3D_PRIMITIVE_6_CONTROL_POINT_PATCH    = 13,
+    D3D_PRIMITIVE_7_CONTROL_POINT_PATCH    = 14,
+    D3D_PRIMITIVE_8_CONTROL_POINT_PATCH    = 15,
+    D3D_PRIMITIVE_9_CONTROL_POINT_PATCH    = 16,
+    D3D_PRIMITIVE_10_CONTROL_POINT_PATCH   = 17,
+    D3D_PRIMITIVE_11_CONTROL_POINT_PATCH   = 18,
+    D3D_PRIMITIVE_12_CONTROL_POINT_PATCH   = 19,
+    D3D_PRIMITIVE_13_CONTROL_POINT_PATCH   = 20,
+    D3D_PRIMITIVE_14_CONTROL_POINT_PATCH   = 21,
+    D3D_PRIMITIVE_15_CONTROL_POINT_PATCH   = 22,
+    D3D_PRIMITIVE_16_CONTROL_POINT_PATCH   = 23,
+    D3D_PRIMITIVE_17_CONTROL_POINT_PATCH   = 24,
+    D3D_PRIMITIVE_18_CONTROL_POINT_PATCH   = 25,
+    D3D_PRIMITIVE_19_CONTROL_POINT_PATCH   = 26,
+    D3D_PRIMITIVE_20_CONTROL_POINT_PATCH   = 28,
+    D3D_PRIMITIVE_21_CONTROL_POINT_PATCH   = 29,
+    D3D_PRIMITIVE_22_CONTROL_POINT_PATCH   = 30,
+    D3D_PRIMITIVE_23_CONTROL_POINT_PATCH   = 31,
+    D3D_PRIMITIVE_24_CONTROL_POINT_PATCH   = 32,
+    D3D_PRIMITIVE_25_CONTROL_POINT_PATCH   = 33,
+    D3D_PRIMITIVE_26_CONTROL_POINT_PATCH   = 34,
+    D3D_PRIMITIVE_27_CONTROL_POINT_PATCH   = 35,
+    D3D_PRIMITIVE_28_CONTROL_POINT_PATCH   = 36,
+    D3D_PRIMITIVE_29_CONTROL_POINT_PATCH   = 37,
+    D3D_PRIMITIVE_30_CONTROL_POINT_PATCH   = 38,
+    D3D_PRIMITIVE_31_CONTROL_POINT_PATCH   = 39,
+    D3D_PRIMITIVE_32_CONTROL_POINT_PATCH   = 40,
+    D3D10_PRIMITIVE_UNDEFINED              = D3D_PRIMITIVE_UNDEFINED,
+    D3D10_PRIMITIVE_POINT                  = D3D_PRIMITIVE_POINT,
+    D3D10_PRIMITIVE_LINE                   = D3D_PRIMITIVE_LINE,
+    D3D10_PRIMITIVE_TRIANGLE               = D3D_PRIMITIVE_TRIANGLE,
+    D3D10_PRIMITIVE_LINE_ADJ               = D3D_PRIMITIVE_LINE_ADJ,
+    D3D10_PRIMITIVE_TRIANGLE_ADJ           = D3D_PRIMITIVE_TRIANGLE_ADJ,
+    D3D11_PRIMITIVE_UNDEFINED              = D3D_PRIMITIVE_UNDEFINED,
+    D3D11_PRIMITIVE_POINT                  = D3D_PRIMITIVE_POINT,
+    D3D11_PRIMITIVE_LINE                   = D3D_PRIMITIVE_LINE,
+    D3D11_PRIMITIVE_TRIANGLE               = D3D_PRIMITIVE_TRIANGLE,
+    D3D11_PRIMITIVE_LINE_ADJ               = D3D_PRIMITIVE_LINE_ADJ,
+    D3D11_PRIMITIVE_TRIANGLE_ADJ           = D3D_PRIMITIVE_TRIANGLE_ADJ,
+    D3D11_PRIMITIVE_1_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_1_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_2_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_2_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_3_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_3_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_4_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_4_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_5_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_5_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_6_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_6_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_7_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_7_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_8_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_8_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_9_CONTROL_POINT_PATCH  = D3D_PRIMITIVE_9_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_10_CONTROL_POINT_PATCH = D3D_PRIMITIVE_10_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_11_CONTROL_POINT_PATCH = D3D_PRIMITIVE_11_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_12_CONTROL_POINT_PATCH = D3D_PRIMITIVE_12_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_13_CONTROL_POINT_PATCH = D3D_PRIMITIVE_13_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_14_CONTROL_POINT_PATCH = D3D_PRIMITIVE_14_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_15_CONTROL_POINT_PATCH = D3D_PRIMITIVE_15_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_16_CONTROL_POINT_PATCH = D3D_PRIMITIVE_16_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_17_CONTROL_POINT_PATCH = D3D_PRIMITIVE_17_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_18_CONTROL_POINT_PATCH = D3D_PRIMITIVE_18_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_19_CONTROL_POINT_PATCH = D3D_PRIMITIVE_19_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_20_CONTROL_POINT_PATCH = D3D_PRIMITIVE_20_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_21_CONTROL_POINT_PATCH = D3D_PRIMITIVE_21_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_22_CONTROL_POINT_PATCH = D3D_PRIMITIVE_22_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_23_CONTROL_POINT_PATCH = D3D_PRIMITIVE_23_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_24_CONTROL_POINT_PATCH = D3D_PRIMITIVE_24_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_25_CONTROL_POINT_PATCH = D3D_PRIMITIVE_25_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_26_CONTROL_POINT_PATCH = D3D_PRIMITIVE_26_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_27_CONTROL_POINT_PATCH = D3D_PRIMITIVE_27_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_28_CONTROL_POINT_PATCH = D3D_PRIMITIVE_28_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_29_CONTROL_POINT_PATCH = D3D_PRIMITIVE_29_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_30_CONTROL_POINT_PATCH = D3D_PRIMITIVE_30_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_31_CONTROL_POINT_PATCH = D3D_PRIMITIVE_31_CONTROL_POINT_PATCH,
+    D3D11_PRIMITIVE_32_CONTROL_POINT_PATCH = D3D_PRIMITIVE_32_CONTROL_POINT_PATCH
+
+class D3D_FEATURE_LEVEL(Structure):
+    _fields_ = [ ("value", c_uint) ]
+    D3D_FEATURE_LEVEL_9_1  = 0x9100,
+    D3D_FEATURE_LEVEL_9_2  = 0x9200,
+    D3D_FEATURE_LEVEL_9_3  = 0x9300,
+    D3D_FEATURE_LEVEL_10_0 = 0xa000,
+    D3D_FEATURE_LEVEL_10_1 = 0xa100,
+    D3D_FEATURE_LEVEL_11_0 = 0xb000
+  
+ID3D11ShaderReflectionType._methods_ = [
+    # TODO
+]
+
+ID3D11ShaderReflectionVariable._methods_ = [
+    STDMETHOD(HRESULT, 'GetDesc', [POINTER(D3D11_SHADER_VARIABLE_DESC)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetType'),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionConstantBuffer), 'GetBuffer'),
+    STDMETHOD(c_uint, 'GetInterfaceSlot', [c_uint])
+]
+
+ID3D11ShaderReflectionConstantBuffer._methods_ = [
+    STDMETHOD(HRESULT, 'GetDesc', [POINTER(D3D11_SHADER_BUFFER_DESC)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionVariable), 'GetVariableByIndex', [c_uint]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionVariable), 'GetVariableByName', [c_uint])
+]
+
+ID3D11ShaderReflection._methods_ = [
+    STDMETHOD(HRESULT, 'GetDesc', [POINTER(D3D11_SHADER_DESC)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionConstantBuffer), 'GetConstantBufferByIndex', [c_uint]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionConstantBuffer), 'GetConstantBufferByName', [c_char_p]),
+    STDMETHOD(HRESULT, 'GetResourceBindingDesc', [c_uint, POINTER(D3D11_SHADER_INPUT_BIND_DESC)]),
+    STDMETHOD(HRESULT, 'GetInputParameterDesc', [c_uint, POINTER(D3D11_SIGNATURE_PARAMETER_DESC)]),
+    STDMETHOD(HRESULT, 'GetOutputParameterDesc', [c_uint, POINTER(D3D11_SIGNATURE_PARAMETER_DESC)]),
+    STDMETHOD(HRESULT, 'GetPatchConstantParameterDesc', [c_uint, POINTER(D3D11_SIGNATURE_PARAMETER_DESC)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionVariable), 'GetVariableByName', [c_char_p]),
+    STDMETHOD(HRESULT, 'GetResourceBindingDescByName', [c_char_p, POINTER(D3D11_SHADER_INPUT_BIND_DESC)]),
+    STDMETHOD(c_uint, 'GetMovInstructionCount'),
+    STDMETHOD(c_uint, 'GetMovcInstructionCount'),
+    STDMETHOD(c_uint, 'GetConversionInstructionCount'),
+    STDMETHOD(c_uint, 'GetBitwiseInstructionCount'),
+    STDMETHOD(D3D_PRIMITIVE, 'GetGSInputPrimitive'),
+    STDMETHOD(BOOL, 'IsSampleFrequencyShader'),
+    STDMETHOD(c_uint, 'GetNumInterfaceSlots'),
+    STDMETHOD(HRESULT, 'GetMinFeatureLevel', [POINTER(D3D_FEATURE_LEVEL)]),
+    STDMETHOD(c_uint, 'GetThreadGroupSize', [POINTER(c_uint), POINTER(c_uint), POINTER(c_uint)]),
+]
 
 # D3D11_FILTER
 class Filter:

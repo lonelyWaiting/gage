@@ -1,11 +1,9 @@
-import binascii
 import os
 import subprocess
 import string
 import struct
 import sys
 from d3dcompiler import *
-
 
 class ShaderType:
   Vertex   = "/Tvs_5_0"
@@ -77,9 +75,13 @@ if __name__ == '__main__':
     print "       InputFilename is the filename of the .py shader definition file"
     print "       OutputFilename is the shader binary output file"
     exit()
-  
+
   ShaderDefinitionFilename = FullPath(sys.argv[1])
   OutputFilename = FullPath(sys.argv[2])
+    
+  #ShaderDefinitionFilename = FullPath("..\\Shaders\\Mesh.py")
+  #OutputFilename = FullPath("..\\Shaders\\Mesh.fxo")
+  #__file__ = "c:\\code\\gage\\ShaderCompiler\\sc.py"
   
   defs = ImportModule(ShaderDefinitionFilename)
 
@@ -124,28 +126,29 @@ if __name__ == '__main__':
   shaderblobs_reflection = {}        
   for k,v in shaderblobs.iteritems():
     pReflectionInterface = POINTER(ID3D11ShaderReflection)()
-    result = windll.D3DCompiler_43.D3DReflect(v, len(v), byref(IID_ID3D11ShaderReflection), byref(pReflectionInterface))
+    result = windll.D3DCompiler_43.D3DReflect(v, len(v), byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
     shaderblobs_reflection[k] = pReflectionInterface
 
   # Print out interesting information
   for k,v in shaderblobs.iteritems():
     print k + ":"
     shaderdesc = D3D11_SHADER_DESC()
-    result = pReflectionInterface.contents.GetDesc(byref(shaderdesc))
+    pReflectionInterface = shaderblobs_reflection[k]
+    result = pReflectionInterface.GetDesc(byref(shaderdesc))
 
     for i in range(shaderdesc.BoundResources):
       resourcedesc = D3D11_SHADER_INPUT_BIND_DESC()
-      pReflectionInterface.contents.GetResourceBindingDesc(i, byref(resourcedesc))
+      pReflectionInterface.GetResourceBindingDesc(i, byref(resourcedesc))
       print "  Res %d (%s): %s(%d)" % (i, D3D10_SHADER_INPUT_TYPE.String(resourcedesc.Type), resourcedesc.Name, resourcedesc.BindPoint)
-
+      
     for i in range(shaderdesc.InputParameters):
       inputparam = D3D11_SIGNATURE_PARAMETER_DESC()
-      pReflectionInterface.contents.GetInputParameterDesc(i, byref(inputparam))
+      pReflectionInterface.GetInputParameterDesc(i, byref(inputparam))
       print "  INPUT %s[%d]: %d" % (inputparam.SemanticName, inputparam.SemanticIndex, inputparam.Register)
 
     for i in range(shaderdesc.OutputParameters):
       outputparam = D3D11_SIGNATURE_PARAMETER_DESC()
-      pReflectionInterface.contents.GetOutputParameterDesc(i, byref(outputparam))
+      pReflectionInterface.GetOutputParameterDesc(i, byref(outputparam))
       print "  OUTPUT %s[%d]: %d" % (outputparam.SemanticName, outputparam.SemanticIndex, outputparam.Register)
 
   # Helper class to manage binary data with relocatable pointers
@@ -228,7 +231,7 @@ if __name__ == '__main__':
       #print "%x" % result
       #print len(shaderblob)
       shaderdesc = D3D11_SHADER_DESC()
-      result = pReflectionInterface.contents.GetDesc(byref(shaderdesc))
+      result = pReflectionInterface.GetDesc(byref(shaderdesc))
 
       constantbuffers = []
       samplerz = []
@@ -236,7 +239,7 @@ if __name__ == '__main__':
       uavs = []
       for i in range(shaderdesc.BoundResources):
         resourcedesc = D3D11_SHADER_INPUT_BIND_DESC()
-        pReflectionInterface.contents.GetResourceBindingDesc(i, byref(resourcedesc))
+        pReflectionInterface.GetResourceBindingDesc(i, byref(resourcedesc))
         if   resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_CBUFFER:                       constantbuffers.append(resourcedesc)
         elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_TBUFFER:                       shaderresources.append(resourcedesc)
         elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_TEXTURE:                       shaderresources.append(resourcedesc)
