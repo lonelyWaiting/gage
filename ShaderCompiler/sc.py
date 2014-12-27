@@ -134,7 +134,7 @@ if __name__ == '__main__':
   shaderblobs_reflection = {}        
   for k,v in shaderblobs.iteritems():
     pReflectionInterface = POINTER(ID3D11ShaderReflection)()
-    result = windll.D3DCompiler_43.D3DReflect(v, len(v), byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
+    result = windll.D3DCompiler_47.D3DReflect(v, len(v), byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
     shaderblobs_reflection[k] = pReflectionInterface
 
   # Print out interesting information
@@ -234,10 +234,6 @@ if __name__ == '__main__':
 
   for technique in techniques:
     def WriteShader(labelpath, shaderblob, pReflectionInterface):
-      #pReflectionInterface = POINTER(ID3D11ShaderReflection)()
-      #result = windll.D3DCompiler_43.D3DReflect(shaderblob, len(shaderblob), byref(IID_ID3D11ShaderReflection), byref(pReflectionInterface))
-      #print "%x" % result
-      #print len(shaderblob)
       shaderdesc = D3D11_SHADER_DESC()
       result = pReflectionInterface.GetDesc(byref(shaderdesc))
 

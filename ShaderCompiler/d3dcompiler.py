@@ -6,7 +6,7 @@ from comtypes import *
 class ID3D11ShaderReflectionType(IUnknown):  _iid_ = GUID("{6E6FFA6A-9BAE-4613-A51E-91652D508C21}")
 class ID3D11ShaderReflectionVariable(IUnknown): _iid_ = GUID("{51F23923-F3E5-4BD1-91CB-606177D8DB4C}")
 class ID3D11ShaderReflectionConstantBuffer(IUnknown): _iid_ = GUID("{EB62D63D-93DD-4318-8AE8-C6F83AD371B8}")
-class ID3D11ShaderReflection(IUnknown): _iid_ = GUID("{0a233719-3960-4578-9d7c-203b8b1d9cc1}")
+class ID3D11ShaderReflection(IUnknown): _iid_ = GUID("{8d536ca1-0cca-4956-a837-786963755584}")
     
 class D3D11_SHADER_DESC(Structure):
   _fields_ = [
@@ -239,6 +239,7 @@ ID3D11ShaderReflection._methods_ = [
     STDMETHOD(c_uint, 'GetNumInterfaceSlots'),
     STDMETHOD(HRESULT, 'GetMinFeatureLevel', [POINTER(D3D_FEATURE_LEVEL)]),
     STDMETHOD(c_uint, 'GetThreadGroupSize', [POINTER(c_uint), POINTER(c_uint), POINTER(c_uint)]),
+    STDMETHOD(c_uint64, 'GetRequiresFlags')
 ]
 
 # D3D11_FILTER
@@ -358,4 +359,3 @@ class Technique(object):
   PixelShader = None
   ComputeShader = None
   Defines = {}
-
