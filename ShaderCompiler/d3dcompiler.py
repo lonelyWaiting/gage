@@ -351,3 +351,11 @@ class D3D11_SAMPLER_DESC(object):
          super(D3D11_SAMPLER_DESC, self).__setattr__(name, value)
          return
     raise NameError("Unknown sampler state [%s = %s]" % (name, value))
+
+class Technique(object):
+  VertexShader = None
+  GeometryShader = None
+  PixelShader = None
+  ComputeShader = None
+  Defines = {}
+

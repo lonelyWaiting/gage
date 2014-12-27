@@ -11,18 +11,21 @@ class ShaderType:
   Pixel    = "/Tps_5_0"
   Compute  = "/Tcs_5_0"
 
-class Technique(object):
-  VertexShader = None
-  GeometryShader = None
-  PixelShader = None
-  ComputeShader = None
-  Defines = {}
+PROJECT_ROOT = ''
 
-# Return the absolute path to fxc.exe (it should be side by side this file)
+def FindProjectRoot():
+  """Find the project root, which is the directory that contains .git. Look backwards from the current directory for .git"""
+  global PROJECT_ROOT
+  PROJECT_ROOT = os.getcwd()
+  while not os.path.isdir(PROJECT_ROOT + "\\.git"):
+    PROJECT_ROOT,tail = os.path.split(PROJECT_ROOT)
+    if tail == '':
+      print "Could not find project root"
+      exit(1)
+
 def FXC():
-  path, filename = os.path.split( os.path.realpath(__file__) )
-  path = os.path.abspath(path)
-  return path + "\\fxc.exe"
+  """The absolute path to fxc.exe, which should be in the PROJECT_ROOT\ShaderCompiler directory"""
+  return PROJECT_ROOT + "\\ShaderCompiler\\fxc.exe"
 
 def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
   TempOutputFilename = "temp.fxo"
@@ -38,7 +41,7 @@ def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
             define_string + \
             " /Fo " + TempOutputFilename
   
-  #print cmdline
+  print cmdline
 
   fxc = subprocess.Popen(cmdline, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
   
@@ -62,6 +65,7 @@ def ImportModule(fullpath):
   path = os.path.abspath(path)
   filename, ext = os.path.splitext(filename)
   sys.path.append(path)
+  print fullpath + " ... " + filename
   module = __import__(filename)
   del sys.path[-1]
   return module
@@ -70,18 +74,22 @@ def FullPath(relpath):
   return os.getcwd() + "\\" + relpath
 
 if __name__ == '__main__':
-  if len(sys.argv) != 3:
-    print "Usage: sc.py InputFilename OutputFilename"
-    print "       InputFilename is the filename of the .py shader definition file"
-    print "       OutputFilename is the shader binary output file"
-    exit()
+  # if __file__ exists, we are running non-interactively, so use cmd line args
+  # if it doesn't exist, we're running interactively, so use test paths
+  if '__file__' in globals():
+    if len(sys.argv) != 3:
+      print "Usage: sc.py InputFilename OutputFilename"
+      print "       InputFilename is the filename of the .py shader definition file"
+      print "       OutputFilename is the shader binary output file"
+      exit(1)
+    ShaderDefinitionFilename = FullPath(sys.argv[1])
+    OutputFilename = FullPath(sys.argv[2])
+  else:    
+    ShaderDefinitionFilename = FullPath("..\\Shaders\\Mesh.py")
+    OutputFilename = FullPath("..\\Shaders\\Mesh.fxo")
 
-  ShaderDefinitionFilename = FullPath(sys.argv[1])
-  OutputFilename = FullPath(sys.argv[2])
-    
-  #ShaderDefinitionFilename = FullPath("..\\Shaders\\Mesh.py")
-  #OutputFilename = FullPath("..\\Shaders\\Mesh.fxo")
-  #__file__ = "c:\\code\\gage\\ShaderCompiler\\sc.py"
+  FindProjectRoot()
+  os.chdir(PROJECT_ROOT)
   
   defs = ImportModule(ShaderDefinitionFilename)
 
@@ -89,7 +97,7 @@ if __name__ == '__main__':
   techniques = []
   samplers = []
   for name,object in defs.__dict__.items():
-    if type(object) == defs.sc.Technique:
+    if type(object) == defs.Technique:
       object.Name = name
       techniques.append(object)
     if type(object) == D3D11_SAMPLER_DESC:
