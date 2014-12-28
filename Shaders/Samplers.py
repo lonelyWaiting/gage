@@ -1,4 +1,4 @@
-from d3dcompiler import *
+from d3dstate import *
 
 font_sampler_state = D3D11_SAMPLER_DESC()
 

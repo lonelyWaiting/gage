@@ -5,6 +5,7 @@ import struct
 import sys
 from blob import *
 from d3dcompiler import *
+from d3dstate import *
 
 class ShaderType:
   Vertex   = "/Tvs_5_0"

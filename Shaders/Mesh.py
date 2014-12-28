@@ -1,8 +1,4 @@
-import os
-import subprocess
-import sys
-from Samplers import *
-from d3dcompiler import *
+from ShaderDefinition import *
 
 ShaderRender = Technique()
 ShaderRender.VertexShader = "BasicVS"
