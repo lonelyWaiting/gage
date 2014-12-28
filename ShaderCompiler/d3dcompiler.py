@@ -202,9 +202,30 @@ class D3D_FEATURE_LEVEL(Structure):
     D3D_FEATURE_LEVEL_10_0 = 0xa000,
     D3D_FEATURE_LEVEL_10_1 = 0xa100,
     D3D_FEATURE_LEVEL_11_0 = 0xb000
+
+class D3D11_SHADER_TYPE_DESC(Structure):
+  _fields_ = [
+    ("Class", c_uint),  # one of D3D_SHADER_VARIABLE_CLASS
+    ("Type", c_uint),   # one of D3D_SHADER_VARIABLE_TYPE
+    ("Rows", c_uint),
+    ("Columns", c_uint),
+    ("Elements", c_uint),
+    ("Members", c_uint),
+    ("Offsets", c_uint),
+    ("Name", c_char_p) ]
   
 ID3D11ShaderReflectionType._methods_ = [
-    # TODO
+    STDMETHOD(HRESULT, 'GetDesc', [POINTER(D3D11_SHADER_TYPE_DESC)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetMemberTypeByIndex', [c_uint]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetMemberTypeByName', [c_char_p]),
+    STDMETHOD(c_char_p, 'GetMemberTypeName', [c_uint]),
+    STDMETHOD(HRESULT, 'IsEqual', [POINTER(ID3D11ShaderReflectionType)]),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetSubType'),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetBaseClass'),
+    STDMETHOD(c_uint, 'GetNumInterfaces'),
+    STDMETHOD(POINTER(ID3D11ShaderReflectionType), 'GetInterfaceByIndex', [c_uint]),
+    STDMETHOD(HRESULT, 'IsOfType', [POINTER(ID3D11ShaderReflectionType)]),
+    STDMETHOD(HRESULT, 'ImplementsInterface', [POINTER(ID3D11ShaderReflectionType)])
 ]
 
 ID3D11ShaderReflectionVariable._methods_ = [
