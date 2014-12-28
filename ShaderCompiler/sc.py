@@ -130,9 +130,7 @@ if __name__ == '__main__':
   # For each of the shader blobs, insert the reflection information into the dictionary
   shaderblobs_reflection = {}        
   for k,v in shaderblobs.iteritems():
-    pReflectionInterface = POINTER(ID3D11ShaderReflection)()
-    result = windll.D3DCompiler_47.D3DReflect(v, len(v), byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
-    shaderblobs_reflection[k] = pReflectionInterface
+    shaderblobs_reflection[k] = D3DReflect(v)
 
   # Print out interesting information
   for k,v in shaderblobs.iteritems():
@@ -141,10 +139,15 @@ if __name__ == '__main__':
     pReflectionInterface = shaderblobs_reflection[k]
     result = pReflectionInterface.GetDesc(byref(shaderdesc))
 
+    def EnumToString(cls, index):
+      for k,v in cls.__dict__.items():
+        if v == index: 
+          return k
+        
     for i in range(shaderdesc.BoundResources):
       resourcedesc = D3D11_SHADER_INPUT_BIND_DESC()
       pReflectionInterface.GetResourceBindingDesc(i, byref(resourcedesc))
-      print "  Res %d (%s): %s(%d)" % (i, D3D10_SHADER_INPUT_TYPE.String(resourcedesc.Type), resourcedesc.Name, resourcedesc.BindPoint)
+      print "  Res %d (%s): %s(%d)" % (i, EnumToString(D3D_SHADER_INPUT_TYPE, resourcedesc.Type), resourcedesc.Name, resourcedesc.BindPoint)
       
     for i in range(shaderdesc.InputParameters):
       inputparam = D3D11_SIGNATURE_PARAMETER_DESC()
@@ -200,18 +203,18 @@ if __name__ == '__main__':
       for i in range(shaderdesc.BoundResources):
         resourcedesc = D3D11_SHADER_INPUT_BIND_DESC()
         pReflectionInterface.GetResourceBindingDesc(i, byref(resourcedesc))
-        if   resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_CBUFFER:                       constantbuffers.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_TBUFFER:                       shaderresources.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_TEXTURE:                       shaderresources.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D10_SIT_SAMPLER:                       samplerz.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_RWTYPED:                   uavs.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_STRUCTURED:                    shaderresources.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_RWSTRUCTURED:              uavs.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_BYTEADDRESS:                   shaderresources.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_RWBYTEADDRESS:             uavs.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_APPEND_STRUCTURED:         uavs.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_CONSUME_STRUCTURED:        uavs.append(resourcedesc)
-        elif resourcedesc.Type == D3D10_SHADER_INPUT_TYPE.D3D11_SIT_UAV_RWSTRUCTURED_WITH_COUNTER: uavs.append(resourcedesc)
+        if   resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_CBUFFER:                       constantbuffers.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_TBUFFER:                       shaderresources.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_TEXTURE:                       shaderresources.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_SAMPLER:                       samplerz.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_RWTYPED:                   uavs.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_STRUCTURED:                    shaderresources.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_RWSTRUCTURED:              uavs.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_BYTEADDRESS:                   shaderresources.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_RWBYTEADDRESS:             uavs.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_APPEND_STRUCTURED:         uavs.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_CONSUME_STRUCTURED:        uavs.append(resourcedesc)
+        elif resourcedesc.Type == D3D_SHADER_INPUT_TYPE.D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER: uavs.append(resourcedesc)
 
       blob.Pack("I", len(constantbuffers))
       blob.Pack("I", len(samplerz))
