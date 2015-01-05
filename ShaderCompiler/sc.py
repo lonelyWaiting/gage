@@ -58,10 +58,9 @@ def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
   CallProcess(mcpp_cmd)
     
   cmdline = FXC() + \
-            " " + TempPreprocessedFilename + \
             " " + Type + \
             " /E" + EntryPoint + \
-            define_string + \
+            " " + TempPreprocessedFilename + \
             " /Fo " + TempOutputFilename
   CallProcess(cmdline)
   
