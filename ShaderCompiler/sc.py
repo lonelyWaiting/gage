@@ -30,7 +30,7 @@ def FXC():
   return PROJECT_ROOT + "\\ShaderCompiler\\fxc.exe"
 
 def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
-  TempOutputFilename = "temp.fxo"
+  TempOutputFilename = InputFilename + "temp.fxo"
 
   define_string = ""
   for k,v in Defines.iteritems():
