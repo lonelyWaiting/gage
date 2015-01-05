@@ -6,3 +6,4 @@ Build/Release/
 *.user
 *.pyc
 *.fxo
+*_temp

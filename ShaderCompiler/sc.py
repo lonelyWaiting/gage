@@ -29,32 +29,46 @@ def FXC():
   """The absolute path to fxc.exe, which should be in the PROJECT_ROOT\ShaderCompiler directory"""
   return PROJECT_ROOT + "\\ShaderCompiler\\fxc.exe"
 
+def MCPP():
+  """The absolute path to mcpp.exe, which should be in the PROJECT_ROOT\ShaderCompiler directory"""
+  return PROJECT_ROOT + "\\ShaderCompiler\\mcpp.exe"
+
+def CallProcess(cmd):
+  """Spawn the process with cmd. Blocks until it returns. If return code != 0, then print stderr and exit"""
+  #print cmd
+  p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+  output, errors = p.communicate()
+  if p.returncode != 0:
+    print errors
+    print "Failure"
+    exit(1)
+
 def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
-  TempOutputFilename = InputFilename + "temp.fxo"
+  TempPreprocessedFilename = InputFilename + "_preprocessed_temp"
+  TempOutputFilename = InputFilename + "_temp"
 
   define_string = ""
   for k,v in Defines.iteritems():
-    define_string += " /D" + k + "=" + v
+    define_string += " -D " + k + "=" + v
 
+  mcpp_cmd = MCPP() + \
+             " " + define_string + \
+             " " + InputFilename + \
+             " " + TempPreprocessedFilename
+  CallProcess(mcpp_cmd)
+    
   cmdline = FXC() + \
-            " " + InputFilename + \
+            " " + TempPreprocessedFilename + \
             " " + Type + \
             " /E" + EntryPoint + \
             define_string + \
             " /Fo " + TempOutputFilename
-  
-  #print cmdline
-
-  fxc = subprocess.Popen(cmdline, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-  output, errors = fxc.communicate()
-  if fxc.returncode != 0:
-    print errors
-    print "Failure"
-    exit(1)
+  CallProcess(cmdline)
   
   f = open(TempOutputFilename, "rb")
   fxo = f.read()
   f.close()
+  os.remove(TempPreprocessedFilename)
   os.remove(TempOutputFilename)
   return fxo
 
