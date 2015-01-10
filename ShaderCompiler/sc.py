@@ -7,11 +7,13 @@ from blob import *
 from d3dcompiler import *
 from d3dstate import *
 
+import ctypes
+
 class ShaderType:
-  Vertex   = "/Tvs_5_0"
-  Geometry = "/Tgs_5_0"
-  Pixel    = "/Tps_5_0"
-  Compute  = "/Tcs_5_0"
+  Vertex   = "vs_5_0"
+  Geometry = "gs_5_0"
+  Pixel    = "ps_5_0"
+  Compute  = "cs_5_0"
 
 PROJECT_ROOT = ''
 
@@ -45,7 +47,6 @@ def CallProcess(cmd):
 
 def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
   TempPreprocessedFilename = InputFilename + "_preprocessed_temp"
-  TempOutputFilename = InputFilename + "_temp"
 
   define_string = ""
   for k,v in Defines.iteritems():
@@ -57,19 +58,10 @@ def CompileShader(InputFilename, Type, EntryPoint, Defines={}):
              " " + TempPreprocessedFilename
   CallProcess(mcpp_cmd)
     
-  cmdline = FXC() + \
-            " " + Type + \
-            " /E" + EntryPoint + \
-            " " + TempPreprocessedFilename + \
-            " /Fo " + TempOutputFilename
-  CallProcess(cmdline)
-  
-  f = open(TempOutputFilename, "rb")
-  fxo = f.read()
-  f.close()
+  fxo,fxo_size = D3DCompileFromFile(TempPreprocessedFilename, EntryPoint, Type)
+
   os.remove(TempPreprocessedFilename)
-  os.remove(TempOutputFilename)
-  return fxo
+  return fxo,fxo_size
 
 def ImportModule(fullpath):
   path, filename = os.path.split(fullpath)
@@ -110,6 +102,7 @@ if __name__ == '__main__':
     if type(object) == defs.Technique:
       object.Name = name
       techniques.append(object)
+      #techniques.insert(0,object)
     if type(object) == D3D11_SAMPLER_DESC:
       object.Name = name
       samplers.append(object)
@@ -123,27 +116,33 @@ if __name__ == '__main__':
     if t.VertexShader:
       name = t.Name + "." + t.VertexShader
       print "Compiling " + name
-      shaderblobs[name] = CompileShader(inputshaderfilename, ShaderType.Vertex, t.VertexShader, t.Defines)
+      fxo,fxo_size = CompileShader(inputshaderfilename, ShaderType.Vertex, t.VertexShader, t.Defines)
+      shaderblobs[name] = (fxo, fxo_size)
 
     if t.GeometryShader:
       name = t.Name + "." + t.GeometryShader
       print "Compiling " + name
-      shaderblobs[name] = CompileShader(inputshaderfilename, ShaderType.Geometry, t.GeometryShader, t.Defines)
+      fxo,fxo_size = CompileShader(inputshaderfilename, ShaderType.Geometry, t.GeometryShader, t.Defines)
+      shaderblobs[name] = (fxo, fxo_size)
 
     if t.PixelShader:
       name = t.Name + "." + t.PixelShader
       print "Compiling " + name
-      shaderblobs[name] = CompileShader(inputshaderfilename, ShaderType.Pixel, t.PixelShader, t.Defines)
+      fxo,fxo_size = CompileShader(inputshaderfilename, ShaderType.Pixel, t.PixelShader, t.Defines)
+      shaderblobs[name] = (fxo, fxo_size)
 
     if t.ComputeShader:
       name = t.Name + "." + t.ComputeShader
       print "Compiling " + name
-      shaderblobs[name] = CompileShader(inputshaderfilename, ShaderType.Compute, t.ComputeShader, t.Defines)
+      fxo,fxo_size = CompileShader(inputshaderfilename, ShaderType.Compute, t.ComputeShader, t.Defines)
+      shaderblobs[name] = (fxo, fxo_size)
 
   # For each of the shader blobs, insert the reflection information into the dictionary
   shaderblobs_reflection = {}        
   for k,v in shaderblobs.iteritems():
-    shaderblobs_reflection[k] = D3DReflect(v)
+    shader_blob = v[0]
+    shader_blob_size = v[1]
+    shaderblobs_reflection[k] = D3DReflect(shader_blob, shader_blob_size)
 
   # Print out interesting information
   for k,v in shaderblobs.iteritems():
@@ -233,7 +232,7 @@ if __name__ == '__main__':
       blob.Pack("I", len(samplerz))
       blob.Pack("I", len(shaderresources))
       blob.Pack("I", len(uavs))
-      blob.Pack("I", len(shaderblob))
+      blob.Pack("I", sizeof(shaderblob[0]))
       blob.Pack("I", 0) # pad
       blob.Reference(labelpath + ".cb")
       blob.Reference(labelpath + ".samplers")
@@ -269,7 +268,7 @@ if __name__ == '__main__':
 
       blob.Align(16)
       blob.Label(labelpath + ".shaderblob")
-      blob.Pack("%ds" % len(shaderblob), shaderblob)
+      blob.Pack("%ds" % sizeof(shaderblob[0]), shaderblob[0].raw) # sizeof(shaderblob[0]) is == shaderblob[1], the shaderblob size
 
     if technique.VertexShader != None:
       name = "technique." + technique.Name + ".vertexshader"

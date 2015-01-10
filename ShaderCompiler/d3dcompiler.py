@@ -1,12 +1,14 @@
+import gc
 import struct
 from ctypes import *
 from ctypes.wintypes import *
 from comtypes import * 
 
-class ID3D11ShaderReflectionType(IUnknown):  _iid_ = GUID("{6E6FFA6A-9BAE-4613-A51E-91652D508C21}")
+class ID3D11ShaderReflectionType(IUnknown): _iid_ = GUID("{6E6FFA6A-9BAE-4613-A51E-91652D508C21}")
 class ID3D11ShaderReflectionVariable(IUnknown): _iid_ = GUID("{51F23923-F3E5-4BD1-91CB-606177D8DB4C}")
 class ID3D11ShaderReflectionConstantBuffer(IUnknown): _iid_ = GUID("{EB62D63D-93DD-4318-8AE8-C6F83AD371B8}")
 class ID3D11ShaderReflection(IUnknown): _iid_ = GUID("{8d536ca1-0cca-4956-a837-786963755584}")
+class ID3DBlob(IUnknown): _iid_ = GUID("{8BA5FB08-5195-40e2-AC58-0D989C3A0102}")
     
 class D3D11_SHADER_DESC(Structure):
   _fields_ = [
@@ -174,8 +176,52 @@ ID3D11ShaderReflection._methods_ = [
     STDMETHOD(c_uint64, 'GetRequiresFlags')
 ]
 
-def D3DReflect(shader_blob):
+ID3DBlob._methods_ = [
+  STDMETHOD(c_void_p, 'GetBufferPointer'),
+  STDMETHOD(c_uint, 'GetBufferSize')
+]
+
+def D3DCompileFromFile(filename, entrypoint, target):
+  """Convenience function to call D3DCompileFromFile()"""
+  D3DCompileFromFile = windll.D3DCompiler_47.D3DCompileFromFile
+  D3DCompileFromFile.argtypes = [LPCWSTR, c_void_p, c_void_p, LPCSTR, LPCSTR, c_uint, c_uint, POINTER(POINTER(ID3DBlob)), POINTER(POINTER(ID3DBlob))]
+  D3DCompileFromFile.restype = c_uint
+
+  pCodeBlob = POINTER(ID3DBlob)()
+  pErrorBlob = POINTER(ID3DBlob)()
+
+  ppCodeBlob = byref(pCodeBlob)
+  ppErrorBlob = byref(pErrorBlob)
+  
+  hresult = D3DCompileFromFile(filename, 0, 0, entrypoint, target, 0, 0, ppCodeBlob, ppErrorBlob)
+
+  if hresult == 0:
+    # I don't understand this. When I say:
+    #   fxo = pCodeBlob.GetBufferPointer()
+    # then the buffer that fxo points to becomes corrupted when I return to the calling function.
+    # I assume that c_void_p implicitly manages the buffer that it points to, but its size is never set? But why would that corrupt data?
+    # In any event, calling c_types.create_string_buffer() and copying the data into that buffer does work.
+    fxo_size = pCodeBlob.GetBufferSize()
+    fxo = create_string_buffer(fxo_size)
+    memmove(fxo, pCodeBlob.GetBufferPointer(), fxo_size)
+    return fxo, fxo_size
+  else:
+    print "D3DCompileFromFile() failed:"
+    print cast(pErrorBlob.GetBufferPointer(), c_char_p).value
+    exit(1)
+
+def D3DReflect(shader_blob, shader_blob_size):
   """Convenience function to call D3DReflect() given a shader binary blob and return the reflection object"""
+  D3DReflect = windll.D3DCompiler_47.D3DReflect
+  D3DReflect.argtypes = [c_void_p, c_uint, POINTER(GUID), POINTER(POINTER(ID3D11ShaderReflection))]
+  D3DReflect.restype = c_uint
+
   pReflectionInterface = POINTER(ID3D11ShaderReflection)()
-  windll.D3DCompiler_47.D3DReflect(shader_blob, len(shader_blob), byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
-  return pReflectionInterface
+  hresult = D3DReflect(shader_blob, shader_blob_size, byref(ID3D11ShaderReflection._iid_), byref(pReflectionInterface))
+  if hresult == 0:
+    return pReflectionInterface
+  else:
+    print "D3DReflect() failed"
+    print "Error code = %d" % hresult
+    exit(1)
+

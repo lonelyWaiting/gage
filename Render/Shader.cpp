@@ -247,25 +247,25 @@ void Shader::Load(const char* filename)
 
 		if (technique->vertex_shader)
 		{
-			HRESULT hr = System::d3d_device->CreateVertexShader((ID3D10Blob*)technique->vertex_shader->shaderblob, technique->vertex_shader->num_bytes_shaderblob, 0, (ID3D11VertexShader**) &technique->vertex_shader->pShader);
+			HRESULT hr = System::d3d_device->CreateVertexShader((void*)technique->vertex_shader->shaderblob, technique->vertex_shader->num_bytes_shaderblob, 0, (ID3D11VertexShader**) &technique->vertex_shader->pShader);
 			assert(hr == S_OK);
 		}
 
 		if (technique->geometry_shader)
 		{
-			HRESULT hr = System::d3d_device->CreateGeometryShader((ID3D10Blob*)technique->geometry_shader->shaderblob, technique->geometry_shader->num_bytes_shaderblob, 0, (ID3D11GeometryShader**) &technique->geometry_shader->pShader);
+			HRESULT hr = System::d3d_device->CreateGeometryShader((void*)technique->geometry_shader->shaderblob, technique->geometry_shader->num_bytes_shaderblob, 0, (ID3D11GeometryShader**) &technique->geometry_shader->pShader);
 			assert(hr == S_OK);
 		}
 
 		if (technique->pixel_shader)
 		{
-			HRESULT hr = System::d3d_device->CreatePixelShader((ID3D10Blob*)technique->pixel_shader->shaderblob, technique->pixel_shader->num_bytes_shaderblob, 0, (ID3D11PixelShader**) &technique->pixel_shader->pShader);
+			HRESULT hr = System::d3d_device->CreatePixelShader((void*)technique->pixel_shader->shaderblob, technique->pixel_shader->num_bytes_shaderblob, 0, (ID3D11PixelShader**) &technique->pixel_shader->pShader);
 			assert(hr == S_OK);
 		}
 
 		if (technique->compute_shader)
 		{
-			HRESULT hr = System::d3d_device->CreateComputeShader((ID3D10Blob*)technique->compute_shader->shaderblob, technique->compute_shader->num_bytes_shaderblob, 0, (ID3D11ComputeShader**) &technique->compute_shader->pShader);
+			HRESULT hr = System::d3d_device->CreateComputeShader((void*)technique->compute_shader->shaderblob, technique->compute_shader->num_bytes_shaderblob, 0, (ID3D11ComputeShader**) &technique->compute_shader->pShader);
 			assert(hr == S_OK);
 		}
 
