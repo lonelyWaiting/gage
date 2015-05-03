@@ -196,11 +196,8 @@ def D3DCompileFromFile(filename, entrypoint, target):
   hresult = D3DCompileFromFile(filename, 0, 0, entrypoint, target, 0, 0, ppCodeBlob, ppErrorBlob)
 
   if hresult == 0:
-    # I don't understand this. When I say:
-    #   fxo = pCodeBlob.GetBufferPointer()
-    # then the buffer that fxo points to becomes corrupted when I return to the calling function.
-    # I assume that c_void_p implicitly manages the buffer that it points to, but its size is never set? But why would that corrupt data?
-    # In any event, calling c_types.create_string_buffer() and copying the data into that buffer does work.
+    # Copy the shaderblob into our own memory. We must do this becaus when this function exits, pCodeBlob goes out of scope,
+    # the COM object is released, and it deallocates its memory (which includes the memory returned by GetBufferPointer().
     fxo_size = pCodeBlob.GetBufferSize()
     fxo = create_string_buffer(fxo_size)
     memmove(fxo, pCodeBlob.GetBufferPointer(), fxo_size)

@@ -232,7 +232,7 @@ if __name__ == '__main__':
       blob.Pack("I", len(samplerz))
       blob.Pack("I", len(shaderresources))
       blob.Pack("I", len(uavs))
-      blob.Pack("I", sizeof(shaderblob[0]))
+      blob.Pack("I", shaderblob[1])
       blob.Pack("I", 0) # pad
       blob.Reference(labelpath + ".cb")
       blob.Reference(labelpath + ".samplers")
@@ -268,7 +268,7 @@ if __name__ == '__main__':
 
       blob.Align(16)
       blob.Label(labelpath + ".shaderblob")
-      blob.Pack("%ds" % sizeof(shaderblob[0]), shaderblob[0].raw) # sizeof(shaderblob[0]) is == shaderblob[1], the shaderblob size
+      blob.Pack("%ds" % shaderblob[1], shaderblob[0].raw) # shaderblob[1] is size, shaderblob[0] the raw bytes
 
     if technique.VertexShader != None:
       name = "technique." + technique.Name + ".vertexshader"
